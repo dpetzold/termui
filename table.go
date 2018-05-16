@@ -4,7 +4,9 @@
 
 package termui
 
-import "strings"
+import (
+	"strings"
+)
 
 /* Table is like:
 
@@ -46,6 +48,7 @@ type Table struct {
 	FgColors  []Attribute
 	BgColors  []Attribute
 	Separator bool
+	Headers   bool
 	TextAlign Align
 }
 
@@ -109,6 +112,8 @@ func (table *Table) SetSize() {
 	length := len(table.Rows)
 	if table.Separator {
 		table.Height = length*2 + 1
+	} else if table.Headers {
+		table.Height = length + 3
 	} else {
 		table.Height = length + 2
 	}
@@ -122,8 +127,10 @@ func (table *Table) SetSize() {
 
 // CalculatePosition ...
 func (table *Table) CalculatePosition(x int, y int, coordinateX *int, coordinateY *int, cellStart *int) {
-	if table.Separator {
+	if table.Separator || (table.Headers && y <= 1) {
 		*coordinateY = table.innerArea.Min.Y + y*2
+	} else if table.Headers {
+		*coordinateY = table.innerArea.Min.Y + y + 1
 	} else {
 		*coordinateY = table.innerArea.Min.Y + y
 	}
@@ -150,6 +157,7 @@ func (table *Table) Buffer() Buffer {
 	pointerX := table.innerArea.Min.X + 2
 	pointerY := table.innerArea.Min.Y
 	borderPointerX := table.innerArea.Min.X
+
 	for y, row := range table.Rows {
 		for x := range row {
 			table.CalculatePosition(x, y, &pointerX, &pointerY, &borderPointerX)
@@ -173,7 +181,8 @@ func (table *Table) Buffer() Buffer {
 			}
 		}
 
-		if table.Separator {
+		if table.Separator || (table.Headers && y == 0) {
+
 			border := DefaultTxBuilder.Build(strings.Repeat("─", table.Width-2), table.FgColor, table.BgColor)
 			for i, cell := range border {
 				buffer.Set(i+1, pointerY+1, cell)

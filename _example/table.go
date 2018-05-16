@@ -49,6 +49,21 @@ func main() {
 	table2.Border = true
 
 	termui.Render(table2)
+
+	table3 := termui.NewTable()
+	table3.Rows = rows1
+	table3.FgColor = termui.ColorWhite
+	table3.BgColor = termui.ColorDefault
+	table3.TextAlign = termui.AlignCenter
+	table3.Y = 20
+	table3.X = 0
+	table3.Separator = false
+	table3.Headers = true
+	table3.Analysis()
+	table3.SetSize()
+
+	termui.Render(table3)
+
 	termui.Handle("/sys/kbd/q", func(termui.Event) {
 		termui.StopLoop()
 	})
