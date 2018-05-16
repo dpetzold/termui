@@ -78,10 +78,10 @@ func (table *Table) Analysis() [][]Cell {
 		return rowCells
 	}
 
-	if len(table.FgColors) == len(table.Rows) {
+	if len(table.FgColors) == len(table.Rows) || len(table.FgColors) == 0 {
 		table.FgColors = make([]Attribute, len(table.Rows))
 	}
-	if len(table.BgColors) == len(table.Rows) {
+	if len(table.BgColors) == len(table.Rows) || len(table.BgColors) == 0 {
 		table.BgColors = make([]Attribute, len(table.Rows))
 	}
 
