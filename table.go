@@ -78,11 +78,11 @@ func (table *Table) Analysis() [][]Cell {
 		return rowCells
 	}
 
-	if len(table.FgColors) == len(table.Rows) {
-		table.FgColors = make([]Attribute, len(table.Rows))
+	if len(table.FgColors) < length {
+		table.FgColors = make([]Attribute, length)
 	}
-	if len(table.BgColors) == len(table.Rows) {
-		table.BgColors = make([]Attribute, len(table.Rows))
+	if len(table.BgColors) < length {
+		table.BgColors = make([]Attribute, length)
 	}
 
 	cellWidths := make([]int, len(table.Rows[0]))
