@@ -185,7 +185,7 @@ func (table *Table) Buffer() Buffer {
 
 			border := DefaultTxBuilder.Build(strings.Repeat("─", table.Width-2), table.FgColor, table.BgColor)
 			for i, cell := range border {
-				buffer.Set(i+1, pointerY+1, cell)
+				buffer.Set(table.innerArea.Min.X+i, pointerY+1, cell)
 			}
 		}
 	}
